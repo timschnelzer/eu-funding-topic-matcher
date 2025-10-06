@@ -1,3 +1,4 @@
+# Python / General Files to Ignore
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
@@ -27,8 +28,8 @@ share/python-wheels/
 MANIFEST
 
 # PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+# Usually these files are written by a python script from a template
+# before PyInstaller builds the exe, so as to inject date/other infos into it.
 *.manifest
 *.spec
 
@@ -206,15 +207,18 @@ marimo/_static/
 marimo/_lsp/
 __marimo__/
 
-# Large data (raw dumps, not for Git)
-data/raw/*
-data/external/*
-data/processed/*.npy
-data/processed/*.index
-data/processed/*.csv
+# --- PROJECT-SPECIFIC ADDITIONS (HORIZON EUROPE TOPIC MATCHER) ---
 
-# Jupyter Notebook checkpoints
-.ipynb_checkpoints/
+# Large generated data (vectors, FAISS index, etc.) which should not be committed.
+# These files are typically too large for Git.
+*.npy
+*.bin
+*.index
+
+# Ignore specific paths inside the data directory
+data/*.npy
+data/*.bin
+data/*.index
 
 # OS files
 .DS_Store
