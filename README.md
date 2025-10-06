@@ -86,26 +86,28 @@ source venv/bin/activate
 
 # Activate it (Windows PowerShell)
 # .\venv\Scripts\Activate.ps1
+```
 
 You should now see (venv) in your terminal prompt.
 
 ** 2. Install Dependencies **
 With the environment activated, install the required packages. Using the requirements.txt file is recommended for a one-step installation.
 
+```bash
 pip install -r requirements.txt
-
+```
 Alternatively, you can install them manually:
-
+```bash
 pip install flask numpy pandas faiss-cpu sentence-transformers
-
+```
 ** 3. Prepare Topic Vectors **
 Before starting the server, ensure your topic vector files (the FAISS index and the corresponding .npy file) are present in the project root directory. These files should be generated using the all-MiniLM-L6-v2 model.
 
 ** 4. Run the Application **
 Start the Flask server:
-
+```bash
 python app.py
-
+```
 The API service will be running at http://127.0.0.1:5001/.
 
 ## Notes
