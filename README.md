@@ -90,7 +90,7 @@ source venv/bin/activate
 
 You should now see (venv) in your terminal prompt.
 
-** 2. Install Dependencies **
+#### 2. Install Dependencies
 With the environment activated, install the required packages. Using the requirements.txt file is recommended for a one-step installation.
 
 ```bash
@@ -100,10 +100,10 @@ Alternatively, you can install them manually:
 ```bash
 pip install flask numpy pandas faiss-cpu sentence-transformers
 ```
-** 3. Prepare Topic Vectors **
+#### 3. Prepare Topic Vectors
 Before starting the server, ensure your topic vector files (the FAISS index and the corresponding .npy file) are present in the project root directory. These files should be generated using the all-MiniLM-L6-v2 model.
 
-** 4. Run the Application **
+#### 4. Run the Application
 Start the Flask server:
 ```bash
 python app.py
