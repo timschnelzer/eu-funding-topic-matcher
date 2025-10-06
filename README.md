@@ -65,18 +65,19 @@ curl -X POST [http://127.0.0.1:5001/](http://127.0.0.1:5001/) \
 ]
 ```
 ---
-
 ## Installation & Setup
-Prerequisites
-Python 3.8+ (recommended: Python 3.10 or newer)
 
-pip
+### Prerequisites
+* **Python 3.8+** (recommended: Python 3.10 or newer)
+* **pip**
 
-Linux / macOS / WSL (on Windows, venv activation differs slightly)
+### Setup (Linux / macOS / WSL)
 
-** 1. Prepare Virtual Environment **
+#### 1. Prepare Virtual Environment
+
 From the project root directory:
 
+```bash
 # Create a new virtual environment
 python3 -m venv venv
 
