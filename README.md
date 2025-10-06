@@ -22,7 +22,7 @@ The matching model was evaluated against a test set, achieving excellent perform
 * **Top-10 Accuracy**: **95.6%**
 * **Mean Reciprocal Rank (MRR@10)**: **0.9148**
 
-For a complete overview of the methodology, data scraping, exploratory data analysis, and evaluation, please see the full project report.
+For a complete overview of the methodology, data scraping, exploratory data analysis, and evaluation, please see the full project report (./reports/project_report_eu_funding_topic_matcher.pdf)
 
 ---
 
