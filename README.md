@@ -46,6 +46,7 @@ curl -X POST [http://127.0.0.1:5001/](http://127.0.0.1:5001/) \
 -d '{
   "project_text": "My project is about developing new battery technologies for electric vehicles using sustainable materials to reduce environmental impact."
 }'
+```bash
 
 **Example Response (JSON):**
 [
