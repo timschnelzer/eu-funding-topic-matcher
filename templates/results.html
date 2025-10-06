@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Search Results — Horizon Europe</title>
+  <style>
+    :root{
+      --brand:#0a66c2; --brand-600:#095aaa; --bg:#f6f7fb; --card:#fff; --text:#111827; --muted:#6b7280;
+      --radius:14px; --shadow-1:0 10px 30px rgba(15,23,42,.06); --shadow-2:0 30px 60px rgba(2,6,23,.10);
+      --ok:#16a34a;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;color:var(--text);background:var(--bg)}
+    .container{max-width:1100px;margin:0 auto;padding:clamp(16px,3vw,36px)}
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+    .title{font-size:clamp(22px,2.6vw,32px);margin:0;font-weight:800;letter-spacing:.2px;
+      background:linear-gradient(90deg,var(--brand),#22c1c3);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .btn{border:1px solid #e5e7eb;background:#fff;color:var(--text);padding:10px 12px;border-radius:12px;cursor:pointer;
+      display:inline-flex;align-items:center;gap:8px;box-shadow:var(--shadow-1);text-decoration:none}
+    .stack{display:grid;gap:18px}
+    .card{background:var(--card);border:1px solid #e5e7eb;border-radius:var(--radius);box-shadow:var(--shadow-2);padding:clamp(16px,2.4vw,24px)}
+    .card-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;border-bottom:1px dashed #e5e7eb;padding-bottom:10px;margin-bottom:10px}
+    .card-header h3{margin:0;font-size:clamp(16px,2vw,18px)}
+    .link{color:#06b6d4;text-decoration:none;font-weight:700}
+    .link:hover{text-decoration:underline}
+    .badge{padding:6px 10px;border-radius:999px;font-size:12px;font-weight:700;background:#eff6ff;border:1px solid #bfdbfe;color:#0a58ca;white-space:nowrap}
+    .block{margin-top:12px;padding:12px;border:1px dashed #e5e7eb;border-radius:12px;background:#fcfcfd}
+    .block h4{margin:0 0 6px 0;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-size:12px}
+    .llm{border-left:6px solid var(--ok);background:#f0fdf4}
+    /* 3-line clamp for preview */
+    .preview{
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;
+      line-height:1.6; color:#374151;
+    }
+    .toggle-wrap{display:flex;justify-content:flex-end;margin-top:6px}
+    .toggle{background:none;border:none;color:#06b6d4;font-weight:700;cursor:pointer;padding:6px 8px;border-radius:8px}
+    .full{display:none;white-space:pre-wrap;color:#374151;line-height:1.6}
+    .full.open{display:block}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="topbar">
+      <h1 class="title">Matching Topics for Your Project</h1>
+      <a href="/" class="btn">← New Search</a>
+    </div>
+
+    <section class="stack" aria-live="polite">
+      {% for result in results %}
+      <article class="card">
+        <div class="card-header">
+          <h3>
+            Rank {{ loop.index }} • Topic
+            <a class="link" href="{{ result.topic_url }}" target="_blank" rel="noopener" title="Open topic page">
+              {{ result.topic_id }}
+            </a>
+          </h3>
+          <span class="badge">Similarity: {{ "%.4f" | format(result.similarity_score) }}</span>
+        </div>
+
+        {% if loop.index == 1 and topic_summary %}
+          <div class="block">
+            <h4>LLM Topic Summary</h4>
+            <div style="font-style: italic">{{ topic_summary }}</div>
+          </div>
+        {% endif %}
+
+        {% if loop.index == 1 and match_analysis %}
+          <div class="block llm">
+            <h4>Match Analysis & Next Steps</h4>
+            <div>{{ match_analysis }}</div>
+          </div>
+        {% endif %}
+
+        <div class="block" style="border-style:solid">
+          <h4>Full Topic Description</h4>
+
+          <!-- 3-line preview -->
+          <div class="preview" id="prev-{{ loop.index }}">{{ result.topic_text }}</div>
+
+          <!-- full text (hidden by default) -->
+          <div class="full" id="full-{{ loop.index }}">
+            {{ result.topic_text }}
+          </div>
+
+          <div class="toggle-wrap">
+            <button class="toggle" data-target="{{ loop.index }}">Show more</button>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </section>
+  </div>
+
+  <script>
+    // Show more/less for each result
+    document.querySelectorAll('.toggle').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const id = btn.getAttribute('data-target');
+        const full = document.getElementById('full-'+id);
+        const prev = document.getElementById('prev-'+id);
+        const open = full.classList.toggle('open');
+        btn.textContent = open ? 'Show less' : 'Show more';
+        // Optionally hide the preview when expanded
+        prev.style.display = open ? 'none' : '-webkit-box';
+      });
+    });
+  </script>
+</body>
+</html>

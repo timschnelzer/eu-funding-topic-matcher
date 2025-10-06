@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Horizon Europe Matcher — Search</title>
+  <style>
+    :root{--brand:#0a66c2;--brand-600:#095aaa;--bg:#f6f7fb;--card:#fff;--text:#1f2937;--muted:#6b7280;--radius:14px;--shadow-1:0 10px 30px rgba(15,23,42,.06);--shadow-2:0 30px 60px rgba(2,6,23,.10)}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;color:var(--text);background:var(--bg)}
+    .container{max-width:920px;margin:clamp(16px,4vw,48px) auto;padding:16px}
+    .brand{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+    .brand h1{font-size:clamp(22px,2.6vw,32px);margin:0;font-weight:800;letter-spacing:.2px;background:linear-gradient(90deg,var(--brand),#22c1c3);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .card{background:var(--card);border:1px solid #e5e7eb;border-radius:var(--radius);box-shadow:var(--shadow-2);padding:clamp(18px,3vw,28px)}
+    .section-title{font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin:4px 0 18px}
+    .field{margin-top:18px}
+    label{display:flex;gap:8px;font-weight:600;margin-bottom:8px;font-size:14px}
+    .hint{color:var(--muted);font-size:12px;margin-top:6px}
+    textarea,input[type="text"]{width:100%;background:#fff;color:var(--text);border:1px solid #e5e7eb;border-radius:12px;padding:12px 14px;font-size:15px;line-height:1.5;outline:none;transition:border-color .15s,box-shadow .15s}
+    textarea:focus,input[type="text"]:focus{border-color:var(--brand);box-shadow:0 0 0 6px rgba(10,102,194,.12)}
+    textarea{min-height:180px;resize:vertical}
+    .row{display:grid;grid-template-columns:1fr;gap:16px}
+    @media(min-width:720px){.row{grid-template-columns:2fr 1fr}}
+    .actions{display:flex;gap:12px;margin-top:22px;flex-wrap:wrap}
+    button{appearance:none;border:none;cursor:pointer;border-radius:12px;font-weight:700;font-size:15px;padding:12px 16px;min-width:220px;display:inline-flex;align-items:center;justify-content:center;gap:10px;transition:transform .15s,filter .15s,box-shadow .15s}
+    .btn-primary{background:linear-gradient(180deg,var(--brand),var(--brand-600));color:#fff;box-shadow:0 12px 28px rgba(10,102,194,.25)}
+    .btn-primary:hover{transform:translateY(-1px);filter:brightness(1.02)}
+    .btn-secondary{background:#fff;border:1px solid #e5e7eb}
+    .spinner{width:16px;height:16px;border-radius:50%;border:2px solid rgba(255,255,255,.5);border-top-color:#fff;animation:spin .7s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* Chips */
+    .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .chip{font-size:12px;padding:6px 10px;border-radius:999px;border:1px dashed #cbd5e1;color:#475569;background:#fff;cursor:pointer;user-select:none}
+    .chip:hover{border-style:solid}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="brand"><h1>Horizon Europe Topic Matcher</h1></div>
+
+    <main class="card">
+      <div class="section-title">Search</div>
+
+      <form action="/search" method="post" id="searchForm" novalidate>
+        <div class="field">
+          <label for="project_text">Project Proposal Text <span style="color:#ef4444">*</span></label>
+          <textarea id="project_text" name="project_text" required placeholder="Please add your project proposal here and provide as much details as possible for a better result."></textarea>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="keywords">Keywords (optional)</label>
+            <input id="keywords" name="keywords" type="text" placeholder="AI, Robotics, ..." />
+            <!-- Suggestion chips -->
+            <div class="chips" aria-label="Keyword suggestions">
+              <span class="chip" data-key="AI">AI</span>
+              <span class="chip" data-key="Robotics">Robotics</span>
+              <span class="chip" data-key="Ethics">Ethics</span>
+              <span class="chip" data-key="Battery Materials">Battery Materials</span>
+              <span class="chip" data-key="Energy Storage">Energy Storage</span>
+              <span class="chip" data-key="Quantum">Quantum</span>
+              <span class="chip" data-key="Photonics">Photonics</span>
+              <span class="chip" data-key="Climate">Climate</span>
+              <span class="chip" data-key="Healthcare">Healthcare</span>
+              <span class="chip" data-key="Cybersecurity">Cybersecurity</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="year">Target Year (optional)</label>
+            <input id="year" name="year" type="text" inputmode="numeric" pattern="[0-9]{4}" placeholder="e.g. 2025" />
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn-primary" id="submitBtn" type="submit"><span class="label">Search for Matching Topics</span></button>
+          <button class="btn-secondary" type="reset">Reset</button>
+        </div>
+      </form>
+    </main>
+  </div>
+
+  <script>
+    document.querySelectorAll('.chip').forEach(chip=>{
+      chip.addEventListener('click', ()=>{
+        const input = document.getElementById('keywords');
+        const parts = (input.value || '').split(',').map(s=>s.trim()).filter(Boolean);
+        const val = chip.dataset.key;
+        if(!parts.includes(val)) parts.push(val);
+        input.value = parts.join(', ');
+        input.focus();
+      });
+    });
+
+    // Submit with Loading-State
+    const form=document.getElementById('searchForm'); const btn=document.getElementById('submitBtn');
+    form.addEventListener('submit', async (e)=>{
+      e.preventDefault(); if(!form.reportValidity()) return;
+      btn.disabled=true; const label=btn.querySelector('.label'); const old=label.textContent;
+      label.textContent='Searching…'; const spin=document.createElement('span'); spin.className='spinner'; btn.prepend(spin);
+      try{
+        const f=new FormData(form);
+        const data={
+          project_text:f.get('project_text'),
+          keywords:(f.get('keywords')||'').split(',').map(s=>s.trim()).filter(Boolean),
+          year:f.get('year')||undefined
+        };
+        const res=await fetch('/search',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+        const html=await res.text(); if(!res.ok) throw new Error(`Server Error (${res.status}): ${html||'Unexpected response'}`);
+        document.open(); document.write(html); document.close();
+      }catch(err){ alert('Error submitting request: '+(err?.message||err)); }
+      finally{ btn.disabled=false; label.textContent=old; spin.remove(); }
+    });
+  </script>
+</body>
+</html>
