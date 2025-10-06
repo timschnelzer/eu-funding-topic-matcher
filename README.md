@@ -46,9 +46,9 @@ curl -X POST [http://127.0.0.1:5001/](http://127.0.0.1:5001/) \
 -d '{
   "project_text": "My project is about developing new battery technologies for electric vehicles using sustainable materials to reduce environmental impact."
 }'
-```bash
-
+```
 **Example Response (JSON):**
+```json
 [
   {
     "topic_id": "HORIZON-CL5-2024-D2-01-01",
@@ -63,7 +63,7 @@ curl -X POST [http://127.0.0.1:5001/](http://127.0.0.1:5001/) \
     "topic_url": "[https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/HORIZON-CL5-2024-D2-01-03](https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/opportunities/topic-details/HORIZON-CL5-2024-D2-01-03)"
   }
 ]
-
+```
 ---
 
 ## Installation & Setup
