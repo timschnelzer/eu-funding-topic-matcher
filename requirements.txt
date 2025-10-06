@@ -1,0 +1,23 @@
+# Web Application Framework
+Flask
+
+# Data Processing and Numerical Operations
+pandas
+numpy
+
+# Machine Learning / Semantic Search Core
+sentence-transformers
+faiss-cpu
+
+# Data Cleaning (NLP)
+nltk
+
+# Data Scraping and Preparation
+requests
+selenium
+webdriver-manager
+beautifulsoup4
+gdown
+
+# Data Visualization
+matplotlib
